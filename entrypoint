@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#set -o errexit
+#set -o pipefail
+#set -o nounset
+
+# Entrypoint for the Docker container
+
+# Delete server.pid if exists
+if [ -f "server.pid" ]; then
+  rm -f "server.pid"
+fi
+
+
+# Activate the virtual environment. Yes, we need one.
+source /venv/bin/activate
+
+# Start the restart_server script in the background
+/restart_server &
+
+
+# Execute the specified command (here python3 app.py)
+exec "$@"

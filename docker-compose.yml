@@ -1,0 +1,41 @@
+services:
+  iot-app:
+    image: iot-app:latest
+    container_name: iot-app
+    restart: unless-stopped
+    env_file:
+      - path: .env
+    privileged: true # Needs to be checked...
+    volumes:
+      - /run/udev:/run/udev:ro
+      - /dev/bus/usb:/dev/bus/usb
+      - ./data:/app/data
+    networks:
+      - monitoring
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    # Uncomment the following lines to deploy the service on a GPU-enabled node
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # You only need this when you want to use OIDC
+  redis:
+    env_file:
+      - path: .env
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    command: --bind 0.0.0.0 --port ${REDIS_PORT}
+    networks:
+      - monitoring
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
+networks:
+  monitoring:
+    driver: bridge

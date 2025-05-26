@@ -1,0 +1,45 @@
+#!/bin/bash
+
+RESTART_FILE="restart.flag"
+
+mkdir -p data/logs
+
+# The '>>' operator writes the echo's into the log file,
+LOG_FILE="data/logs/SYSTEM_RESTART.log"
+
+touch $LOG_FILE
+
+
+# This script checks if there is a restart request and handles the server process accordingly.
+# The request is indicated by the presence of a file named "restart.flag".
+# This file will be touched in the restart_server() function in control.py
+
+while true; do
+    if [ -f "server.pid" ]; then
+        SERVER_PID=$(cat server.pid)
+
+        if [ -f "$RESTART_FILE" ]; then
+            echo "Server restart detected." >> $LOG_FILE
+            rm -f "$RESTART_FILE"
+
+            # 1. Send SIGTERM to the server process
+            kill -15 $SERVER_PID
+            echo "SIGTERM sent to server (PID: $SERVER_PID)." >> $LOG_FILE
+            sleep 5
+
+            # 2. If the server is still running, send SIGKILL
+            if ps -p $SERVER_PID > /dev/null; then
+                echo "Process is still running. Sending SIGKILL." >> $LOG_FILE
+                kill -9 $SERVER_PID
+            fi
+
+            echo "Restarting server..." >> $LOG_FILE
+            python app.py
+            NEW_SERVER_PID=$!
+            echo $NEW_SERVER_PID > server.pid
+            echo "Server restarted with PID: $NEW_SERVER_PID." >> $LOG_FILE
+        fi
+    fi
+
+    sleep 2
+done

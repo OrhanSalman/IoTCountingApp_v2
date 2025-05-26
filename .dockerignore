@@ -1,0 +1,15 @@
+web/
+data/
+runs/
+sample.env
+orion_settings.enc
+mqtt_settings.enc
+restart.flag
+benchmark.log
+docs
+__pycache__/
+.git
+.venv/
+.env
+.vscode/
+server.log
