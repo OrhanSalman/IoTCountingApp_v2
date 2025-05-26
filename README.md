@@ -126,7 +126,7 @@ Keycloak settings:
 4. Test different configurations based on simulation videos.
 5. Start inference
 
-Up to this point, the application has a standalone character. Optionally, it's worth looking at the [IoTPlattform](https://github.com/OrhanSalman/IoTPlattform). Through this, you can set up a Keycloak user, an MQTT broker, as well as Grafana.
+Up to this point, the application has a standalone character. Optionally, it's worth looking at the [IoTPlattform](https://github.com/OrhanSalman/IoTPlattform_v2). Through this, you can set up a Keycloak user, an MQTT broker, as well as Grafana.
 
 ## CUDA in Docker
 
