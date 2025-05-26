@@ -14,27 +14,27 @@ services:
       - monitoring
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    # Uncomment the following lines to deploy the service on a GPU-enabled node
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    ## Uncomment the following lines to deploy the service on a GPU-enabled node
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: 1
+    #          capabilities: [gpu]
 
-  # You only need this when you want to use OIDC
-  redis:
-    env_file:
-      - path: .env
-    image: redis:latest
-    container_name: redis
-    restart: unless-stopped
-    command: --bind 0.0.0.0 --port ${REDIS_PORT}
-    networks:
-      - monitoring
-    ports:
-      - "${REDIS_PORT}:${REDIS_PORT}"
+  ## You only need this when you want to use OIDC
+  #redis:
+  #  env_file:
+  #    - path: .env
+  #  image: redis:latest
+  #  container_name: redis
+  #  restart: unless-stopped
+  #  command: --bind 0.0.0.0 --port ${REDIS_PORT}
+  #  networks:
+  #    - monitoring
+  #  ports:
+  #    - "${REDIS_PORT}:${REDIS_PORT}"
 
 networks:
   monitoring:
